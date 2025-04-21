@@ -22,11 +22,11 @@
 - [x] Implémenter la génération des portes
 
 ### Phase 4 : Combat et Ennemis
-- [ ] Créer le système de combat basique
-- [ ] Implémenter la classe Enemy
-- [ ] Ajouter différents types d'ennemis
-- [ ] Développer l'IA des ennemis
-- [ ] Implémenter le système de dégâts
+- [x] Créer le système de combat basique
+- [x] Implémenter la classe Enemy
+- [x] Ajouter différents types d'ennemis
+- [x] Développer l'IA des ennemis
+- [x] Implémenter le système de dégâts
 
 ### Phase 5 : Items et Progression
 - [ ] Créer le système d'inventaire
@@ -69,3 +69,8 @@
   - Implémentation du système de connexion des salles par des couloirs
   - Ajout des murs et obstacles avec détection de collision
   - Intégration du donjon dans le jeu
+- Implémentation du système de combat et des ennemis (Phase 4)
+  - Création de la classe Enemy avec différents types d'ennemis
+  - Développement du système de combat en tour par tour
+  - Implémentation de l'IA des ennemis
+  - Ajout du système de dégâts et de la gestion des tours

@@ -54,6 +54,7 @@ class InputHandler {
                 break;
             case ' ':
                 this.keys.space = true;
+                // L'attaque sera gérée dans la classe Player
                 break;
             case 'e':
             case 'E':

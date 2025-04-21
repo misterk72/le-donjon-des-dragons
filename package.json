@@ -1,0 +1,20 @@
+{
+  "name": "donjon-rogue-lite",
+  "version": "1.0.0",
+  "description": "Un jeu rogue-lite en tour par tour développé en HTML, CSS et JavaScript",
+  "main": "index.html",
+  "scripts": {
+    "test": "jest",
+    "test:player": "jest player.test.js",
+    "test:enemy": "jest enemy.test.js",
+    "test:dungeon": "jest dungeon.test.js",
+    "test:combat": "jest combat.test.js",
+    "test:camera": "jest camera.test.js",
+    "test:gameState": "jest gameState.test.js",
+    "test:game": "jest game.test.js"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.5.0"
+  }
+}

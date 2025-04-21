@@ -31,6 +31,19 @@ class Game {
         // Joueur (sera placé au point de départ du donjon)
         this.player = null;
         
+        // Système de combat
+        this.combatSystem = new CombatSystem(this);
+        
+        // Liste des ennemis
+        this.enemies = [];
+        
+        // Nombre d'ennemis à générer
+        this.minEnemies = 3;
+        this.maxEnemies = 8;
+        
+        // Gestion des tours
+        this.enemyTurn = false; // false = tour du joueur, true = tour des ennemis
+        
         // Variables de la boucle de jeu
         this.lastTime = 0;
         this.animationFrameId = null;
@@ -61,6 +74,12 @@ class Game {
         const startY = this.dungeon.startY * this.gridSize;
         this.player = new Player(this, startX, startY);
         
+        // Générer les ennemis
+        this.generateEnemies();
+        
+        // Réinitialiser le tour
+        this.enemyTurn = false;
+        
         // Mettre à jour la caméra pour centrer sur le joueur
         this.camera.follow(this.player);
         
@@ -68,6 +87,71 @@ class Game {
         this.ui.hideAllScreens();
         this.lastTime = performance.now();
         this.animationFrameId = requestAnimationFrame(this.gameLoop);
+    }
+    
+    // Générer les ennemis dans le donjon
+    generateEnemies() {
+        // Vider la liste des ennemis
+        this.enemies = [];
+        
+        // Placer quelques ennemis fixes pour tester
+        // Placer un ennemi de chaque type dans des positions fixes
+        
+        // Gobelin (type basic)
+        const gobelin = new Enemy(this, 5, 5, 'basic');
+        this.enemies.push(gobelin);
+        console.log('Gobelin placé en position (5, 5)');
+        
+        // Rat (type fast)
+        const rat = new Enemy(this, 7, 7, 'fast');
+        this.enemies.push(rat);
+        console.log('Rat placé en position (7, 7)');
+        
+        // Ogre (type tank)
+        const ogre = new Enemy(this, 9, 9, 'tank');
+        this.enemies.push(ogre);
+        console.log('Ogre placé en position (9, 9)');
+        
+        console.log(`Généré ${this.enemies.length} ennemis dans le donjon`);
+    }
+    
+    // Terminer le tour du joueur et commencer le tour des ennemis
+    endPlayerTurn() {
+        // Marquer que c'est le tour des ennemis
+        this.enemyTurn = true;
+        
+        // Réinitialiser le mouvement du joueur
+        this.player.hasMoved = true;
+        
+        // Après un court délai, exécuter le tour des ennemis
+        setTimeout(() => {
+            this.executeEnemyTurn();
+        }, 500);
+    }
+    
+    // Exécuter le tour des ennemis
+    executeEnemyTurn() {
+        // Réinitialiser l'état des ennemis
+        for (const enemy of this.enemies) {
+            if (enemy.active) {
+                enemy.hasMoved = false;
+            }
+        }
+        
+        // Laisser les ennemis jouer leur tour pendant un certain temps
+        setTimeout(() => {
+            // Terminer le tour des ennemis
+            this.endEnemyTurn();
+        }, 1000);
+    }
+    
+    // Terminer le tour des ennemis et revenir au tour du joueur
+    endEnemyTurn() {
+        // Marquer que c'est le tour du joueur
+        this.enemyTurn = false;
+        
+        // Réinitialiser le mouvement du joueur
+        this.player.hasMoved = false;
     }
     
     // Mettre le jeu en pause
@@ -127,12 +211,56 @@ class Game {
     
     // Mettre à jour les éléments du jeu
     update(deltaTime) {
-        if (this.player) {
-            // Mettre à jour le joueur
-            this.player.update(deltaTime);
+        if (this.gameState.currentState === 'PLAYING') {
+            // Mettre à jour le système de combat
+            this.combatSystem.update(deltaTime);
             
-            // Mettre à jour la caméra pour suivre le joueur
-            this.camera.follow(this.player);
+            if (this.player) {
+                // Mettre à jour le joueur
+                this.player.update(deltaTime);
+                
+                // Mettre à jour la caméra pour suivre le joueur
+                this.camera.follow(this.player);
+            }
+            
+            // Mettre à jour les ennemis
+            for (const enemy of this.enemies) {
+                if (enemy.active) {
+                    enemy.update(deltaTime);
+                }
+            }
+            
+            // Mettre à jour l'interface utilisateur
+            this.ui.updateScore();
+            
+            // Vérifier si tous les ennemis ont été vaincus
+            this.checkVictory();
+        }
+    }
+    
+    // Vérifier si tous les ennemis ont été vaincus
+    checkVictory() {
+        // S'il n'y a pas d'ennemis, ne rien faire
+        if (!this.enemies || this.enemies.length === 0) {
+            return;
+        }
+        
+        // Vérifier si tous les ennemis sont inactifs
+        const allDefeated = this.enemies.every(enemy => !enemy.active);
+        
+        // Si tous les ennemis sont vaincus, afficher un message de victoire
+        if (allDefeated) {
+            console.log("Victoire ! Tous les ennemis ont été vaincus !");
+            
+            // Ajouter un bonus de score pour avoir vaincu tous les ennemis
+            this.gameState.addScore(100);
+            
+            // Mettre à jour l'interface utilisateur
+            this.ui.updateScore();
+            
+            // Générer un nouveau niveau (pour l'instant, juste réinitialiser le niveau actuel)
+            // Dans une version future, on pourrait générer un nouveau niveau plus difficile
+            this.restart();
         }
     }
     
@@ -144,16 +272,57 @@ class Game {
         // Appliquer la transformation de la caméra
         this.canvas.ctx.translate(-this.camera.x, -this.camera.y);
         
-        // Dessiner le fond (temporaire)
+        // Dessiner le fond (donjon)
         this.drawBackground();
+        
+        // Dessiner les ennemis (avec vérification supplémentaire)
+        console.log(`Nombre d'ennemis à dessiner: ${this.enemies.length}`);
+        if (this.enemies && this.enemies.length > 0) {
+            for (let i = 0; i < this.enemies.length; i++) {
+                const enemy = this.enemies[i];
+                if (enemy && enemy.active) {
+                    console.log(`Dessin de l'ennemi ${i} de type ${enemy.type}`);
+                    // Dessiner un cercle rouge temporaire pour s'assurer que quelque chose est visible
+                    const ctx = this.canvas.ctx;
+                    ctx.fillStyle = '#ff0000';
+                    ctx.beginPath();
+                    ctx.arc(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, 20, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    
+                    // Appeler la méthode draw de l'ennemi
+                    enemy.draw();
+                }
+            }
+        }
         
         // Dessiner le joueur
         if (this.player) {
             this.player.draw();
         }
         
+        // Dessiner les animations d'attaque
+        this.combatSystem.drawAttackAnimations();
+        
         // Restaurer le contexte
         this.canvas.ctx.restore();
+        
+        // Dessiner l'indicateur de tour
+        this.drawTurnIndicator();
+    }
+    
+    // Dessiner l'indicateur de tour
+    drawTurnIndicator() {
+        const ctx = this.canvas.ctx;
+        const text = this.enemyTurn ? "Tour des ennemis" : "Votre tour";
+        const color = this.enemyTurn ? "#e74c3c" : "#2ecc71";
+        
+        ctx.fillStyle = color;
+        ctx.font = "16px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText(text, this.canvas.canvas.width / 2, 30);
     }
     
     // Dessiner le fond du jeu

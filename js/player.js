@@ -46,14 +46,32 @@ class Player {
     
     // Mettre à jour la position et l'état du joueur
     update(deltaTime) {
+        // Si ce n'est pas le tour du joueur, ne rien faire
+        if (this.game.enemyTurn) return;
+        
         // Gestion du déplacement
         this.move(deltaTime);
+        
+        // Gestion de l'attaque
+        this.handleAttack();
         
         // Mise à jour de l'animation
         this.updateAnimation(deltaTime);
         
         // Mise à jour de l'interface utilisateur
         this.updateUI();
+    }
+    
+    // Gérer l'attaque du joueur
+    handleAttack() {
+        // Si le joueur appuie sur la touche d'espace, attaquer
+        if (this.game.input.keys.space) {
+            // Réinitialiser l'état de la touche pour éviter des attaques multiples
+            this.game.input.keys.space = false;
+            
+            // Attaquer avec le système de combat
+            this.game.combatSystem.playerAttack();
+        }
     }
     
     // Gérer le déplacement du joueur en tour par tour
@@ -247,10 +265,27 @@ class Player {
         // Mettre à jour l'interface utilisateur
         this.updateUI();
         
+        // Effet visuel de dégât
+        this.flashDamage();
+        
         // Vérifier si le joueur est mort
         if (this.health <= 0) {
             this.die();
         }
+    }
+    
+    // Effet visuel de dégât (flash rouge)
+    flashDamage() {
+        // Sauvegarder la couleur originale
+        const originalColor = this.color;
+        
+        // Changer la couleur en rouge
+        this.color = '#ff0000';
+        
+        // Rétablir la couleur originale après un court délai
+        setTimeout(() => {
+            this.color = originalColor;
+        }, 200);
     }
     
     // Soigner le joueur
