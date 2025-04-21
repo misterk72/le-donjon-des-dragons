@@ -1,0 +1,125 @@
+/* Reset et styles de base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #121212;
+    color: #f0f0f0;
+    overflow: hidden;
+}
+
+/* Conteneur principal du jeu */
+#game-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Canvas du jeu */
+#game-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    z-index: 1;
+}
+
+/* Interface utilisateur */
+#ui-overlay {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+#health-bar {
+    width: 200px;
+    height: 20px;
+    background-color: #333;
+    border: 2px solid #666;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+#health-fill {
+    width: 100%;
+    height: 100%;
+    background-color: #ff3333;
+    transition: width 0.3s ease;
+}
+
+#score {
+    font-size: 18px;
+    color: #fff;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Écrans (menu, game over, pause) */
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 3;
+}
+
+.hidden {
+    display: none;
+}
+
+h1, h2 {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    color: #f0f0f0;
+    text-shadow: 0 0 10px #66aaff;
+}
+
+h2 {
+    font-size: 2.5rem;
+}
+
+button {
+    background-color: #333;
+    color: #fff;
+    border: 2px solid #66aaff;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin: 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    background-color: #66aaff;
+    color: #000;
+    transform: scale(1.05);
+}
+
+/* Animation pour le menu */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+#menu h1 {
+    animation: pulse 2s infinite;
+}

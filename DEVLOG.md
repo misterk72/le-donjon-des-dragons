@@ -3,10 +3,10 @@
 ## Liste des tâches
 
 ### Phase 1 : Structure de base
-- [ ] Créer la structure des fichiers (index.html, style.css, main.js)
-- [ ] Mettre en place le canvas pour le rendu du jeu
-- [ ] Implémenter la boucle de jeu principale
-- [ ] Créer le système de gestion des états du jeu (menu, jeu, pause)
+- [x] Créer la structure des fichiers (index.html, style.css, main.js)
+- [x] Mettre en place le canvas pour le rendu du jeu
+- [x] Implémenter la boucle de jeu principale
+- [x] Créer le système de gestion des états du jeu (menu, jeu, pause)
 
 ### Phase 2 : Système de jeu fondamental
 - [ ] Implémenter le système de déplacement du joueur
@@ -54,3 +54,8 @@
 ### 21/04/2025
 - Création initiale du projet
 - Mise en place du README.md et DEVLOG.md
+- Implémentation de la structure de base du jeu (Phase 1)
+  - Création des fichiers HTML, CSS et JavaScript
+  - Mise en place du canvas et de la boucle de jeu
+  - Implémentation du système de gestion des états du jeu
+  - Création de l'interface utilisateur de base

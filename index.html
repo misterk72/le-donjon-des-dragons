@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donjon Rogue-lite</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+        <div id="ui-overlay">
+            <div id="health-bar">
+                <div id="health-fill"></div>
+            </div>
+            <div id="score">Score: 0</div>
+        </div>
+        <div id="menu" class="screen">
+            <h1>Donjon Rogue-lite</h1>
+            <button id="start-button">Commencer</button>
+            <button id="options-button">Options</button>
+        </div>
+        <div id="game-over" class="screen hidden">
+            <h2>Game Over</h2>
+            <p>Score final: <span id="final-score">0</span></p>
+            <button id="restart-button">Recommencer</button>
+            <button id="menu-button">Menu principal</button>
+        </div>
+        <div id="pause-menu" class="screen hidden">
+            <h2>Pause</h2>
+            <button id="resume-button">Reprendre</button>
+            <button id="quit-button">Quitter</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/canvas.js"></script>
+    <script src="js/gameState.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/input.js"></script>
+    <script src="js/game.js"></script>
+</body>
+</html>
