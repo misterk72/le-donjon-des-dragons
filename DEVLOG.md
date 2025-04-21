@@ -9,11 +9,11 @@
 - [x] Créer le système de gestion des états du jeu (menu, jeu, pause)
 
 ### Phase 2 : Système de jeu fondamental
-- [ ] Implémenter le système de déplacement du joueur
-- [ ] Créer la classe Player avec les attributs de base (vie, position)
-- [ ] Développer le système de collision
-- [ ] Ajouter l'animation basique du personnage
-- [ ] Créer la caméra qui suit le joueur
+- [x] Implémenter le système de déplacement du joueur
+- [x] Créer la classe Player avec les attributs de base (vie, position)
+- [x] Développer le système de collision
+- [x] Ajouter l'animation basique du personnage
+- [x] Créer la caméra qui suit le joueur
 
 ### Phase 3 : Génération du donjon
 - [ ] Implémenter l'algorithme de génération procédurale des salles
@@ -59,3 +59,8 @@
   - Mise en place du canvas et de la boucle de jeu
   - Implémentation du système de gestion des états du jeu
   - Création de l'interface utilisateur de base
+- Implémentation du système de jeu fondamental (Phase 2)
+  - Création de la classe Player avec système de déplacement
+  - Développement du système de collision
+  - Ajout d'animations basiques pour le personnage
+  - Implémentation de la caméra qui suit le joueur
