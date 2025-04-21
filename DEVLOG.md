@@ -16,10 +16,10 @@
 - [x] Créer la caméra qui suit le joueur
 
 ### Phase 3 : Génération du donjon
-- [ ] Implémenter l'algorithme de génération procédurale des salles
-- [ ] Créer le système de connexion des salles
-- [ ] Ajouter les murs et les obstacles
-- [ ] Implémenter la génération des portes
+- [x] Implémenter l'algorithme de génération procédurale des salles
+- [x] Créer le système de connexion des salles
+- [x] Ajouter les murs et les obstacles
+- [x] Implémenter la génération des portes
 
 ### Phase 4 : Combat et Ennemis
 - [ ] Créer le système de combat basique
@@ -64,3 +64,8 @@
   - Développement du système de collision
   - Ajout d'animations basiques pour le personnage
   - Implémentation de la caméra qui suit le joueur
+- Implémentation de la génération procédurale du donjon (Phase 3)
+  - Création de l'algorithme de génération des salles
+  - Implémentation du système de connexion des salles par des couloirs
+  - Ajout des murs et obstacles avec détection de collision
+  - Intégration du donjon dans le jeu

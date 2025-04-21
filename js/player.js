@@ -151,8 +151,17 @@ class Player {
             return true;
         }
         
-        // Pour l'instant, pas d'autres obstacles, donc pas de collision
-        // Cette méthode sera étendue dans la Phase 3 avec la génération du donjon
+        // Vérifier si la position est un mur dans le donjon
+        if (this.game.dungeon.isWall(gridX, gridY)) {
+            return true;
+        }
+        
+        // Vérifier si c'est une porte (les portes sont traversables)
+        if (this.game.dungeon.isDoor(gridX, gridY)) {
+            // Jouer une animation ou un son d'ouverture de porte (futur)
+            return false; // Les portes sont traversables
+        }
+        
         return false;
     }
     

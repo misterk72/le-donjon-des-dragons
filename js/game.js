@@ -22,10 +22,13 @@ class Game {
         // Système de collision
         this.collisionSystem = new CollisionSystem(this);
         
+        // Générateur de donjon
+        this.dungeon = new Dungeon(this);
+        
         // Caméra
         this.camera = new Camera(this, this.canvas.canvas.width, this.canvas.canvas.height);
         
-        // Joueur (centré sur l'écran au départ)
+        // Joueur (sera placé au point de départ du donjon)
         this.player = null;
         
         // Variables de la boucle de jeu
@@ -46,16 +49,20 @@ class Game {
     
     // Démarrer le jeu
     start() {
-        // Initialiser ou réinitialiser le joueur au centre de la grille
-        const centerGridX = Math.floor(this.gridWidth / 2);
-        const centerGridY = Math.floor(this.gridHeight / 2);
-        const centerX = centerGridX * this.gridSize;
-        const centerY = centerGridY * this.gridSize;
-        this.player = new Player(this, centerX, centerY);
+        // Générer un nouveau donjon
+        this.dungeon.generate();
         
-        // Définir la taille du monde en fonction de la taille du canvas
+        // Définir la taille du monde en fonction de la taille de la grille
         this.worldWidth = this.gridWidth * this.gridSize;
         this.worldHeight = this.gridHeight * this.gridSize;
+        
+        // Initialiser le joueur au point de départ du donjon
+        const startX = this.dungeon.startX * this.gridSize;
+        const startY = this.dungeon.startY * this.gridSize;
+        this.player = new Player(this, startX, startY);
+        
+        // Mettre à jour la caméra pour centrer sur le joueur
+        this.camera.follow(this.player);
         
         this.gameState.setState('PLAYING');
         this.ui.hideAllScreens();
@@ -151,43 +158,8 @@ class Game {
     
     // Dessiner le fond du jeu
     drawBackground() {
-        // Dessiner une grille pour le jeu en tour par tour
-        const ctx = this.canvas.ctx;
-        
-        // Dessiner les cases de la grille en alternant les couleurs
-        for (let x = 0; x < this.gridWidth; x++) {
-            for (let y = 0; y < this.gridHeight; y++) {
-                // Alterner les couleurs pour créer un effet de damier
-                if ((x + y) % 2 === 0) {
-                    ctx.fillStyle = '#1a1a1a'; // Cases foncées
-                } else {
-                    ctx.fillStyle = '#2a2a2a'; // Cases plus claires
-                }
-                
-                // Dessiner la case
-                ctx.fillRect(x * this.gridSize, y * this.gridSize, this.gridSize, this.gridSize);
-            }
-        }
-        
-        // Dessiner les lignes de la grille
-        ctx.strokeStyle = '#333333';
-        ctx.lineWidth = 1;
-        
-        // Dessiner les lignes verticales
-        for (let x = 0; x <= this.worldWidth; x += this.gridSize) {
-            ctx.beginPath();
-            ctx.moveTo(x, 0);
-            ctx.lineTo(x, this.worldHeight);
-            ctx.stroke();
-        }
-        
-        // Dessiner les lignes horizontales
-        for (let y = 0; y <= this.worldHeight; y += this.gridSize) {
-            ctx.beginPath();
-            ctx.moveTo(0, y);
-            ctx.lineTo(this.worldWidth, y);
-            ctx.stroke();
-        }
+        // Dessiner le donjon
+        this.dungeon.draw();
     }
 }
 
